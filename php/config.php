@@ -9,7 +9,7 @@
  * A copy of this license can be found in the LICENSE.text file.
  */
   define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
-  define('DB_DATABASE', 'board18');
-  define('DB_USER', 'board18');
-  define('DB_PASSWORD', 'board18');
+  define('DB_DATABASE', $_ENV['DB_DATABASE'] ?? 'board18');
+  define('DB_USER', $_ENV['DB_USER'] ?? 'board18');
+  define('DB_PASSWORD', $_ENV['DB_PASSWORD'] ?? 'board18');
 ?>

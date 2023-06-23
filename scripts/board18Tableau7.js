@@ -1,11 +1,11 @@
 /* 
- * board18Map7.js contains the function that implements the
+ * board18Market7.js contains the function that implements the
  * keyboard shortcut events and the functions that implement the
  * calls to the checkForUpdate.php and snapShot.php routines.
  * 
  * It now also contains the code for the new snapshot function.
  *
- * Copyright (c) 2015 Richard E. Price under the The MIT License.
+ * Copyright (c) 2013 Richard E. Price under the The MIT License.
  * A copy of this license can be found in the LICENSE.text file.
  */
 
@@ -17,14 +17,15 @@
  *  C/ESC Cancel Move
  *    Z   Undo Move
  *    Y   Redo Move
- *    H   Hide/Show
  *    S   Take Snapshot
  *    M   Goto Stock Chart
  *    O   Goto Main Page
  *    X   Logout
  *    F   Flip Token
- *    R   Rotate Tile Clockwise
- *    E   Rotate Tile Counterclockwise
+ *    L   Move Left One Box
+ *    R   Move Right One Box
+ *    U   Move Up One Box
+ *    D   Move Down One Box
  */
 function setUpKeys() {
   $(document).keydown(function(e){
@@ -36,17 +37,29 @@ function setUpKeys() {
           break;
         case 27:// ESC keycode
         case 67: // "C" keycode
-          cancelMove();
-          break;  
+          if (BD18.deletedMarketToken) {
+            BD18.curTrayNumb = BD18.deletedMarketToken.snumb;
+            BD18.curIndex = BD18.deletedMarketToken.index;
+            BD18.curFlip = BD18.deletedMarketToken.flip;
+            BD18.curStack = BD18.deletedMarketToken.stack;
+            BD18.curMktX = BD18.deletedMarketToken.bx;
+            BD18.curMktY = BD18.deletedMarketToken.by;
+            BD18.curBoxX = BD18.deletedMarketToken.hx;
+            BD18.curBoxY = BD18.deletedMarketToken.hy;
+            addToken();
+          }
+          trayCanvasApp();
+          mainCanvasApp();
+          toknCanvasApp();
+          BD18.boxIsSelected = false;
+          BD18.tokenIsSelected = false;
+          break;
 	case 90: // "Z" keycode
 	  historyMove(-1);
           break;
  	case 89: // "Y" keycode
 	  historyMove(1);
           break;
-	case 72: // "H" keycode
-	  hideShow();
-	  break;
 	case 83: // "S" keycode
 	  $('#snapname .error').hide();
 	  $('#snapname :text').val('');
@@ -55,11 +68,8 @@ function setUpKeys() {
 	  $('#rname').focus();
 	  break;
         case 77: // "M" keycode
-          window.location = "board18Market.php?dogame=" + BD18.gameID;
+          window.location = "board18Map.php?dogame=" + BD18.gameID;
           break;
-        case 84: // "T" keycode
-          window.location = "board18Tableau.php?dogame=" + BD18.gameID;
-	  break;
         case 79: // "O" keycode
           window.location = "board18Main.php";
           break;
@@ -67,29 +77,57 @@ function setUpKeys() {
 	  $.post('php/logout.php', logoutOK);
           break; 
         case 70: // "F" keycode
-          if (BD18.hexIsSelected === true && 
+          if (BD18.boxIsSelected === true && 
               BD18.tokenIsSelected === true){
             flipToken();
           };
           break; 
+        case 76: // "L" keycode
+          if (BD18.boxIsSelected === true && 
+              BD18.tokenIsSelected === true){
+            var subX = parseInt(BD18.stockMarket.xStep);
+            BD18.curMktX -= subX;
+            BD18.tempToken[5] = null;
+            BD18.curStack  = null;
+            repositionToken(BD18.curMktX,BD18.curMktY);
+          };
+          break; 
         case 82: // "R" keycode
-          if (BD18.hexIsSelected === true && 
-              BD18.tileIsSelected === true){
-            rotateTile("cw");
+          if (BD18.boxIsSelected === true && 
+              BD18.tokenIsSelected === true){
+            var addX = parseInt(BD18.stockMarket.xStep);
+            BD18.curMktX += addX;
+            BD18.tempToken[5] = null;
+            BD18.curStack  = null;
+            repositionToken(BD18.curMktX,BD18.curMktY);
           };
           break; 
-        case 69: // "E" keycode
-          if (BD18.hexIsSelected === true && 
-              BD18.tileIsSelected === true){
-            rotateTile("ccw");
+        case 85: // "U" keycode
+          if (BD18.boxIsSelected === true && 
+              BD18.tokenIsSelected === true){
+            var subY = parseInt(BD18.stockMarket.yStep);
+            BD18.curMktY -= subY;
+            BD18.tempToken[5] = null;
+            BD18.curStack  = null;
+            repositionToken(BD18.curMktX,BD18.curMktY);
           };
           break; 
+        case 68: // "D" keycode
+          if (BD18.boxIsSelected === true && 
+              BD18.tokenIsSelected === true){
+            var addY = parseInt(BD18.stockMarket.yStep);
+            BD18.curMktY += addY;
+            BD18.tempToken[5] = null;
+            BD18.curStack  = null;
+            repositionToken(BD18.curMktX,BD18.curMktY);
+          };
+          break;  
         default:
       }
       e.preventDefault();
     }
   });
-};
+}
 
 /* 
  * The checkForUpdateCallback function is the callback function
@@ -215,3 +253,4 @@ function snapshot() {
   $('#snapname form').hide();
   BD18.isSnap = false;
 }
+

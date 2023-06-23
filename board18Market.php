@@ -174,6 +174,8 @@ if ($result1) {
               <ul>
                 <li onclick="window.location = 'board18Map.php?dogame=' + BD18.gameID;">
                   Map Board(M)</li>
+                <li onclick="window.location = 'board18Tableau.php?dogame=' + BD18.gameID;">
+		  Tableau(T)</li>
                 <li onclick="window.location = 'board18Main.php';">Main Page(O)</li>
                 <li onclick="$.post('php/logout.php', logoutOK);">Log Out(X)</li>
               </ul>

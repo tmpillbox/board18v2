@@ -70,6 +70,9 @@ function setUpKeys() {
         case 77: // "M" keycode
           window.location = "board18Map.php?dogame=" + BD18.gameID;
           break;
+        case 84: // "T" keycode
+          window.location = "board18Tableau.php?dogame=" + BD18.gameID;
+          break;
         case 79: // "O" keycode
           window.location = "board18Main.php";
           break;

@@ -1,7 +1,7 @@
 <?php
 /*
- * The map page consists of the page header, the game board (on the right) 
- * and the left sidebar containing the tile and token trays.
+ * The market page consists of the page header, the stock  
+ * market and the left sidebar containing the token trays.
  * 
  * Copyright (c) 2013 Richard E. Price under the The MIT License.
  * A copy of this license can be found in the LICENSE.text file.
@@ -69,7 +69,7 @@ if ($result1) {
       error_log("snap query failed");
       $status = 'fail';
     }
-  } else {   
+  } else {    
     error_log("status query failed");
     $status = 'fail';
   }
@@ -86,28 +86,28 @@ if ($result1) {
     </title>
     <link rel="shortcut icon" href="images/favicon.ico" >
     <link rel="stylesheet" href="style/board18com.css" />
-    <link rel="stylesheet" href="style/board18Map.css" />
+    <link rel="stylesheet" href="style/board18Market.css" />
     <script type="text/javascript" src="scripts/jquery.js">
-    </script>
-    <script type="text/javascript" src="scripts/jqueryMigrate.js">
     </script> 
     <script type="text/javascript" src="scripts/board18com.js">
     </script>
+    <script type="text/javascript" src="scripts/jqueryMigrate.js">
+    </script> 
     <script type="text/javascript" src="scripts/jquery.ui.position.js">
     </script>
-    <script type="text/javascript" src="scripts/board18Map1.js">
+    <script type="text/javascript" src="scripts/board18Tableau1.js">
     </script> 
-    <script type="text/javascript" src="scripts/board18Map2.js">
+    <script type="text/javascript" src="scripts/board18Tableau2.js">
     </script> 
-    <script type="text/javascript" src="scripts/board18Map3.js">
+    <script type="text/javascript" src="scripts/board18Tableau3.js">
     </script> 
-    <script type="text/javascript" src="scripts/board18Map4.js">
+    <script type="text/javascript" src="scripts/board18Tableau4.js">
     </script> 
-    <script type="text/javascript" src="scripts/board18Map5.js">
-    </script>
-    <script type="text/javascript" src="scripts/board18Map6.js">
-    </script>
-    <script type="text/javascript" src="scripts/board18Map7.js">
+    <script type="text/javascript" src="scripts/board18Tableau5.js">
+    </script> 
+    <script type="text/javascript" src="scripts/board18Tableau6.js">
+    </script> 
+    <script type="text/javascript" src="scripts/board18Tableau7.js">
     </script> 
     <script type="text/javascript">
       $(function() {
@@ -126,7 +126,7 @@ if ($result1) {
         startMessage += BD18.headermessage;
         $('#lognote').text(startMessage);
         setUpKeys();
-        $('#content').on({'click':mapMouseEvent});
+        $('#content').on({"click": mapMouseEvent});
         $("#snapname").submit(function() {  
           snapshot();
           return false;
@@ -147,6 +147,7 @@ if ($result1) {
   </head>
 
   <body onclick="$('.menu').hide();$('.menu ul ul').hide();">
+
     <div id="topofpage">
       <div id="logo">
         <img src="images/logo.png" alt="Logo"/> 
@@ -168,14 +169,12 @@ if ($result1) {
               Cancel Move(C)</li>
             <li onclick="historyMove(-1);" class="no move undo grey">Undo Move(Z)</li>
             <li onclick="historyMove(1);" class="no move redo grey">Redo Move(Y)</li>
-            <li onclick="hideShow();">Hide/Show(H)</li>
             <li onclick="$('.menu ul ul').hide();$(this).children('ul').toggle();
               event.stopPropagation();">Go To -->
               <ul>
-                <li onclick="window.location = 'board18Market.php?dogame=' + BD18.gameID;">
-                  Stock Market(M)</li>
-		<li onclick="window.location = 'board18Tableau.php?dogame=' + DB18.gameID;">
-		  Tableau(T)</li>
+                <li onclick="window.location = 'board18Map.php?dogame=' + BD18.gameID;">
+                  Map Board(M)</li>
+		<li onclick="window.location = 'board18Market.php?dogname=' + DB18.gameID;">Stock Market(N)"</li>
                 <li onclick="window.location = 'board18Main.php';">Main Page(O)</li>
                 <li onclick="$.post('php/logout.php', logoutOK);">Log Out(X)</li>
               </ul>
@@ -185,7 +184,7 @@ if ($result1) {
               <ul>
                 <li onclick="$('#snapname .error').hide();$('#snapname :text').val('');
                   $('#snapname form').slideDown(300);
-					        BD18.isSnap = true;$('#rname').focus();">Take Snapshot(S)</li>
+					BD18.isSnap = true;$('#rname').focus();">Take Snapshot(S)</li>
                 <li onclick="window.location = 'board18SnapList.php?gameid=' + BD18.gameID;">
                   Show Snap List</li>
               </ul>
@@ -209,9 +208,9 @@ if ($result1) {
 
     <div id="topleftofpage">
       <span id="traybutton" onclick="$('#mainmenu').hide();
-      $('#traymenu').toggle();event.stopPropagation();"> Trays </span>
-    </div> 
-    <div id="traymenu" class="menu"></div> 
+        $('#traymenu').toggle();event.stopPropagation();"> Trays </span>
+    </div>
+    <div id="traymenu" class="menu"></div>
     <div id="botleftofpage">
       <div id="sidebar">
         <div id="tiles" onclick="traySelect(event);">
@@ -224,6 +223,7 @@ if ($result1) {
     </div>
 
     <div id="rightofpage" oncontextmenu="mapMouseEvent(event);">
+      
       <div id="content">
         <canvas id="canvas1">
           Your browser does not support the HTML 5 Canvas. 
@@ -232,7 +232,7 @@ if ($result1) {
         </canvas>
       </div>  
     </div>
-
+    
     <div id="snapname">
       <form name="snapname" class="hideform" action="">
         <fieldset>
@@ -255,7 +255,6 @@ if ($result1) {
              Pressing the Snapshot button will take a snapshot
              of the current game status. Please take a snapshot
              once per round and include the round in its name.
-          </p>
           <p>
             <label for="rname"> Enter Snapshot Name: </label>
             <input type="text" name="rname" id="rname">

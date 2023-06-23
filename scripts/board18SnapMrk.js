@@ -26,6 +26,9 @@ function setUpKeys() {
         case 77: // "M" keycode
           window.location = 'board18SnapMap.php?show=' + BD18.snapID;
           break;
+        case 84: // "T" keycode
+          window.location = 'board18SnapTab.php?show=' + BD18.snapID;
+	  break;
         case 71: // "G" keycode
           window.location = 'board18Map.php?dogame=' + BD18.gameID;
           break; 
