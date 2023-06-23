@@ -54,13 +54,13 @@ function doMail(report,login) {
  * On a status of success or email it will send an email to the author.
  */
 function zipBoxOk(resp) {
- // var resp = jQuery.parseJSON(status); 
+ // var resp = JSON.parse(status); 
   if (resp.stat === 'nofile') {
     $("#zfile_error").text('The input zip file is missing.').show();
-    $("#zfile").focus();
+    $("#zfile") .trigger('focus');
   } else if (resp.stat === 'toobig') {
     $("#zfile_error").text('The input zip file is too big.').show();
-    $("#zfile").focus();
+    $("#zfile") .trigger('focus');
   } else if (resp.stat === 'success') {
     $('#successmsg').show();
     doMail(resp.rpttext,resp.author);

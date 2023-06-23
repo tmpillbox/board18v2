@@ -17,7 +17,7 @@ function listReturn(response) {
   if (response.indexOf("<!doctype html>") !== -1) { // User has timed out.
     window.location = "access-denied.html";
   }
-  var resp = jQuery.parseJSON(response);
+  var resp = JSON.parse(response);
   if (resp.stat === 'success') {
     var gameHTML= '<table id="gamelist"> <tr><th>Game ID</th>';
     gameHTML+= '<th>Game Name</th><th>Start Date</th><th>Status</th></tr>';
@@ -168,7 +168,7 @@ function getReturn(response) {
   if (response.indexOf("<!doctype html>") !== -1) { // User has timed out.
     window.location = "access-denied.html";
   }
-  var resp = jQuery.parseJSON(response);
+  var resp = JSON.parse(response);
   if (resp.stat === 'success' || resp.stat === 'noplayers') {
     BD18.game.stat = resp.stat;
     BD18.game.gameid = resp.gameid;
@@ -210,7 +210,7 @@ function gameResult(response) {
   } else if (response === 'gname') {  
     var logmessage = 'This game name is already in use.';
     $("#gname_error").text(logmessage).show();
-    $("#gname").focus();  
+    $("#gname") .trigger('focus');  
   } else if (response === 'fail') {
     var errmsg = 'Program error in gameUpdate.php.\n';
     errmsg += 'Please contact the BOARD18 webmaster.';
@@ -242,11 +242,27 @@ function updateGame() {
   var gname = $("input#gname").val();
   if (gname === "") {
     $("#gname_error").text('This field is required.').show();
-    $("#gname").focus();
+    $("#gname") .trigger('focus');
     return false;
-  } else {
-    BD18.game.newGname = gname;
+  } 
+  var format = /[!@#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
+  if(format.test(gname)){
+    $("#gname_error").text('Game Name cannot contain special characters.').show();  
+    $("#gname") .trigger('focus');  
+    return false; 
   }
+  var ascii = /^[\x00-\x7F]*$/;
+  if(!ascii.test(gname)){
+    $("#gname_error").text('Game Name can only contain ascii characters.').show();  
+    $("#gname") .trigger('focus');  
+    return false; 
+  }
+  if(gname.length > 25){
+    $("#gname_error").text('Game Name must be 25 characters or less.').show();  
+    $("#gname") .trigger('focus');  
+    return false; 
+  }
+  BD18.game.newGname = gname;
   var aString = $('.reg').serialize();
   aString += '&status=' + $("#status option:selected").val();
   aString += '&gameid=' + BD18.game.gameid;

@@ -51,7 +51,7 @@ function loginOK(response) {
     if (response.indexOf("<!doctype html>") !== -1) { // User has timed out.
         window.location = "access-denied.html";
     }
-    var resp = jQuery.parseJSON(response);
+    var resp = JSON.parse(response);
     if (resp.stat === 'success') {
         $('#login #password').val('');
         $('#login :text').val('');
@@ -98,7 +98,7 @@ function loginOK(response) {
         }
     } else if (resp.stat === 'no') {
         $("#signon_error").show();
-        $("#username").focus();
+        $("#username") .trigger('focus');
     } else if (resp.stat === 'fail') {
         var errmsg1 = 'Program error in validateUser.php.\n';
         errmsg1 += 'Please contact the BOARD18 webmaster.';
@@ -121,13 +121,13 @@ function login() {
     var name = $("input#username").val();
     if (name === "") {
         $("#name_error").show();
-        $("#username").focus();
+        $("#username") .trigger('focus');
         return false;
     }
     var passwd = $("input#password").val();
     if (passwd === "") {
         $("#password_error").show();
-        $("#password").focus();
+        $("#password") .trigger('focus');
         return false;
     }
     var hash = hex_sha256(passwd);
@@ -153,15 +153,15 @@ function regResult(response) {
         doLogNote(loginNote);
     } else if (response === 'duplicate') {
         $("#newuser_error").text('Username is already in use.').show();
-        $("#newuser").focus();
+        $("#newuser") .trigger('focus');
     } else if (response === 'bademail') {
         $("#email_error").text('Invalid email format, please correct.').show();
-        $("#email").focus();
+        $("#email") .trigger('focus');
     } else if (response.substring(0, 5) === 'email') {
         var logmessage = 'Player ' + response.substring(5);
         logmessage += ' is already using this email address.';
         $("#email_error").text(logmessage).show();
-        $("#email").focus();
+        $("#email") .trigger('focus');
     } else if (response === 'fail') {
         var errmsg1 = 'Program error in newUser.php.\n';
         errmsg1 += 'Please contact the BOARD18 webmaster.';
@@ -181,29 +181,76 @@ function regResult(response) {
  */
 function register() {
     $('.error').hide();
+    var ascii = /^[\x00-\x7F]*$/;
+    var format = /[#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
     var name = $("input#newuser").val();
     if (name === "") {
         $("#newuser_error").show();
-        $("#newuser").focus();
+        $("#newuser").trigger('focus');
         return false;
+    }
+    if(!ascii.test(name)){
+      $("#newuser_error").text('Player ID can only contain ascii characters.');
+      $("#newuser_error").show();
+      $("#newuser").trigger('focus');  
+      return false; 
+    }
+    if(format.test(name)){
+      $("#newuser_error").text('Player ID cannot contain special characters.');
+      $("#newuser_error").show();  
+      $("#newuser").trigger('focus');  
+      return false; 
+    }
+    if(name.length > 16){
+      $("#newuser_error").text('Player ID must be 16 characters or less.');
+      $("#newuser_error").show();  
+      $("#newuser").trigger('focus');  
+      return false; 
     }
     var passwrd1 = $("input#passwrd1").val();
     if (passwrd1 === "") {
         $("#passwrd1_error").show();
-        $("#passwrd1").focus();
+        $("#passwrd1").trigger('focus');
         return false;
     }
     var passwrd2 = $("input#passwrd2").val();
     if (passwrd2 !== passwrd1) {
         $("#passwrd2_error").show();
-        $("#passwrd2").focus();
+        $("#passwrd2") .trigger('focus');
         return false;
     }
     var email = $("input#email").val();
     if (email === "") {
-        $("#email_error").show();
-        $("#email").focus();
+        $("#email_error").text('This field is required.').show();
+        $("#email").trigger('focus');
         return false;
+    }
+    if (email !== email.toLowerCase()) {
+        $("#email_error").text('Email address must be lower case.').show();
+        $("#email").trigger('focus');
+        return false;
+    }
+    var fname = $("input#fname").val();
+    if (fname === "") {
+        $("#fname_error").show();
+        $("#fname").trigger('focus');
+        return false;
+    }  
+    if(fname.length > 25){
+      $("#fname_error").text('First name must be 25 characters or less.').show();  
+      $("#fname").trigger('focus');  
+      return false; 
+    } 
+    var lname = $("input#lname").val();
+    if (lname === "") {
+        $("#lname_error").show();
+        $("#lname").trigger('focus');
+        return false;
+    } 
+    if(lname.length > 25){
+      $("#lname_error").text('Last name must be 25 characters or less.').show();  
+      $("#lname").trigger('focus');  
+      return false; 
     }
     var regString = $('.reg').serialize();
     var hash = hex_sha256(passwrd1);
@@ -226,7 +273,11 @@ function emailPlayerResult(response) {
     } else if (response === 'bademail') {
         $("#email1_error").text('Format of email address is invalid.')
                 .show();
-        $("#email1").focus();
+        $("#email1") .trigger('focus');
+    } else if (response === 'noemail') {
+        $("#email1_error").text('No player record for entered email address.')
+                .show();
+        $("#email1") .trigger('focus');
     } else if (response === 'fail') {
         var errmsg1 = 'Program error in emailPlayerID.php.\n';
         errmsg1 += 'Please contact the BOARD18 webmaster.';
@@ -249,7 +300,7 @@ function lostid() {
     var email = $("input#email1").val();
     if (email === "") {
         $("#email1_error").show();
-        $("#email1").focus();
+        $("#email1") .trigger('focus');
         return false;
     }
     var dataString = 'email=' + email;
@@ -271,15 +322,15 @@ function emailPasswdResult(response) {
     } else if (response === 'bademail') {
         $("#email2_error").text('Format of email address is invalid.')
                 .show();
-        $("#email2").focus();
+        $("#email2") .trigger('focus');
     } else if (response === 'noplayer') {
         $("#name1_error").text('Player ID is not correct.')
                 .show();
-        $("#username1").focus();
+        $("#username1") .trigger('focus');
     } else if (response === 'noemail') {
         $("#email2_error").text('Email address is not correct.')
                 .show();
-        $("#email2").focus();
+        $("#email2") .trigger('focus');
     } else if (response === 'fail') {
         var errmsg1 = 'Program error in emailPassword.php.\n';
         errmsg1 += 'Please contact the BOARD18 webmaster.';
@@ -300,15 +351,15 @@ function emailPasswdResult(response) {
 function lostpw() {
     $('.error').hide();
     var name = $("input#username1").val();
-    if (email === "") {
+    if (name === "") {
         $("#name1_error").show();
-        $("#username1").focus();
+        $("#username1") .trigger('focus');
         return false;
     }
     var email = $("input#email2").val();
     if (email === "") {
         $("#email1_error").show();
-        $("#email1").focus();
+        $("#email1") .trigger('focus');
         return false;
     }
     var dataString = 'name=' + name + '&email=' + email;

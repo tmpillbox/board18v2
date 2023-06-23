@@ -31,7 +31,7 @@ if (mysqli_connect_error()) {
   $status = 'fail';
   exit;
 }
-mysqli_set_charset($link, "utf-8");
+mysqli_set_charset($link, "utf8mb4");
 
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
@@ -110,19 +110,19 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
         $("#players").on("click", ".playerid", function() {
           doPlayer($(this).html());
         }); // end players.click
-        $('#button1').click(function() {
+        $('#button1').on("click",function() {
           BD18.player.update = 'no';
           BD18.first = 0;
           updatePlayer();
           return false;
         }); // end button1 click
-        $('#button2').click(function() {
+        $('#button2').on("click",function() {
           BD18.player.update = 'no';
           BD18.first = 0;
           paintPlayer();
           return false;
         }); // end button2 click
-        $('#button3').click(function() {
+        $('#button3').on("click",function() {
           $('#gamelist').remove();
           $('#theplayer').slideUp(300);
           doPageLinks();
@@ -130,7 +130,7 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
           BD18.first = 0;
           return false;
         }); // end button3 click
-        $('#button4').click(function() {
+        $('#button4').on("click",function() {
           $('#theplayer').slideUp(300);
           $('#gamelist').remove();
           $('.error').hide();
@@ -140,41 +140,27 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
           BD18.first = 0;
           return false;
         }); // end button4 click
-        $('#button5').click(function() {
+        $('#button5').on("click",function() {
           BD18.player.update = 'no';
           deletePlayer();
           return false;
         }); // end button5 click
-        $('#button11').click(function() {
+        $('#button11').on("click",function() {
           doEmail();
           return false;
         }); // end button11 click
-        $('#button12').click(function() {
+        $('#button12').on("click",function() {
           $('.error').hide();
           $("#subject1").val('');
           $("#body1").val('');
           return false;
         }); // end button12 click
-        $('#button13').click(function() {
+        $('#button13').on("click",function() {
           $('#onemail').slideUp(300);
           $('#theplayer').slideDown(300);
           playerGames();
           return false;
         }); // end button13 click
-        $('#button21').click(function() {
-          sendBroadcast();  
-          return false;
-        }); // end button21 click
-        $('#button22').click(function() {
-          $('.error').hide();
-          $("#subject2").val('');
-          $("#body2").val('');
-          return false;
-        }); // end button22 click
-        $('#button23').click(function() {
-          $('#allmail').slideUp(300);
-          return false;
-        }); // end button23 click
       }); // end ready
     </script>
   </head>
@@ -197,9 +183,6 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
         </p>
 	<div id="mainmenu" class="menu">
           <ul class="bigMenu">
-            <li onclick="$('#theplayer').slideUp(300);$('#gamelist').remove();
-                         $('.error').hide();$('#allmail').slideDown(300);
-			 BD18.player.update = 'no';">Send Broadcast</li>
             <li onclick="window.location = 'board18Admin.php';">Return to Admin</li>
             <li onclick="window.location = 'board18Main.php';">Main Page</li>
             <li onclick="$.post('php/logout.php', logoutOK);">Log Out</li>
@@ -229,26 +212,30 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
             <p>
               <label for="login">Change Player ID:</label>
               <input type="text" name="login" id="login" class="reg"
-                     value="">
+                     size="20" value="">
               <label class="error" for="login" id="login_error">
                 This field is required.</label>
             </p>
             <p>
               <label for="email">Change Email Address: </label>
               <input type="text" name="email" id="email" class="reg"
-                     value="">
+                     size="30" value="">
               <label class="error" for="email" id="email_error">
                 This field is required.</label>
             </p>
             <p>
               <label for="fname">Change First Name: </label>
               <input type="text" name="fname" id="fname" class="reg"
-                     value="">
+                     size="30" value="">
+              <label class="error" for="fname" id="fname_error">
+                This field is required.</label>
             </p>
             <p>
               <label for="lname">Change Last Name: </label>
               <input type="text" name="lname" id="lname" class="reg"
-                     value="">
+                     size="30" value="">
+              <label class="error" for="lname" id="lname_error">
+                This field is required.</label>
             </p>
             <p id="levelselect">
             </p>
@@ -292,34 +279,6 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
                      id="button12" value="Reset Form" >
               <input type="button" name="canbutton" class="pwbutton"  
                      id="button13" value="Exit" >
-            </p>
-          </fieldset>
-        </form>
-      </div>
-      <div id="allmail" class="hidediv">
-        <form name="allmail" class="playerform" action="">
-          <fieldset>
-            <p>
-              Send an administrative Email to all players.   
-            </p>
-            <p>
-              <label for="subject" style="width: 80px;">Subject:</label>
-              <input type="text" name="subject" id="subject2" value="">
-              <label class="error" for="subject" id="subject2_error">
-                This field is required.</label>
-            </p>
-            <p>
-              <label for="body" style="width: 80px; vertical-align:top;">
-                Body: </label>
-              <textarea name="body" id="body2" cols=60 rows=10></textarea>
-            </p>
-            <p>
-              <input type="button" name="emailonebutton" class="pwbutton"  
-                     id="button21" value="Send Email" >
-              <input type="button" name="resbutton" class="pwbutton"  
-                     id="button22" value="Reset Form" >
-              <input type="button" name="canbutton" class="pwbutton"  
-                     id="button23" value="Exit" >
             </p>
           </fieldset>
         </form>

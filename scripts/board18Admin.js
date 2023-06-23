@@ -19,7 +19,7 @@ function forceResult(response) {
   }
   else if (response === 'player') {
     $("#pname2_error").text('Invalid player ID.').show();
-    $("#pname2").focus();
+    $("#pname2") .trigger('focus');
   }
   else if (response === 'fail') {
     var errmsg = 'Data Base update failed.\n';
@@ -41,24 +41,26 @@ function forceResult(response) {
  */
 function forceChange(currpw) {
   $('.error').hide();  
+  var ascii = /^[\x00-\x7F]*$/;
+  var format = /[#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
   var pname2 = $("input#pname2").val();
   if (pname2 === "") {
     $("#pname2_error").show();
-    $("#pname2").focus();
+    $("#pname2") .trigger('focus');
     return false;
   }
 
   var passwrd3 = $("input#passwrd3").val();
   if (passwrd3 === "") {
     $("#passwrd3_error").show();
-    $("#passwrd3").focus();
+    $("#passwrd3") .trigger('focus');
     return false;
   }
 
   var passwrd4 = $("input#passwrd4").val();
   if (passwrd4 !== passwrd3) {
     $("#passwrd4_error").show();
-    $("#passwrd4").focus();
+    $("#passwrd4") .trigger('focus');
     return false;
   }
 
@@ -78,13 +80,13 @@ function adminResult(response) {
   }
   else if (response === 'bademail') {
     $("#email_error").text('Invalid email format, please correct.').show();
-    $("#email").focus();
+    $("#email") .trigger('focus');
   }
   else if (response.substring(0, 5) === 'email') {
     var logmessage = 'User ' + response.substring(5);
     logmessage += ' is already using this email address.';
     $("#email_error").text(logmessage).show();
-    $("#email").focus();
+    $("#email") .trigger('focus');
   }
   else if (response === 'success') {
     $('#login #password').val('');
@@ -114,38 +116,87 @@ function adminResult(response) {
  */
 function administrate(currpw) {
   $('.error').hide();
+  var ascii = /^[\x00-\x7F]*$/;
+  var format = /[#$%^&*()+\=\[\]{};':"\\|,<>\/?]+/;
   var oldpw1 = $("input#oldpw1").val();
   if (oldpw1 === "") {
     $("#oldpw1_error").show();
-    $("#oldpw1").focus();
+    $("#oldpw1") .trigger('focus');
     return false;
   }
   var hash1 = hex_sha256(oldpw1);
   if (hash1 !== currpw) {
     var pwmessage = "Invalid Current Password.";
     $("#oldpw1_error").text(pwmessage).show();
-    $("#oldpw1").focus();
+    $("#oldpw1") .trigger('focus');
     return false;
   }
   var name = $("input#pname").val();
   if (name === "") {
-    $("#pname_error").show();
-    $("#pname").focus();
+    $("#pname_error").text('This field is required.').show();
+    $("#pname") .trigger('focus');
     return false;
+  }
+  if(!ascii.test(name)){
+    $("#pname_error").text('Player ID can only contain ascii characters.').show();  
+    $("#pname").trigger('focus');  
+    return false; 
+  }
+  if(format.test(name)){
+    $("#pname_error").text('Player ID cannot contain special characters.').show();  
+    $("#pname").trigger('focus');  
+    return false; 
+  }
+  if(name.length > 16){
+    $("#pname_error").text('Player ID must be 16 characters or less.').show();  
+    $("#pname").trigger('focus');  
+    return false; 
   }
   var passwrd1 = $("input#passwrd1").val();
   var passwrd2 = $("input#passwrd2").val();
   if (passwrd2 !== passwrd1) {
     $("#passwrd2_error").show();
-    $("#passwrd2").focus();
+    $("#passwrd2") .trigger('focus');
     return false;
   }
   var email = $("input#email").val();
   if (email === "") {
-    $("#email_error").show();
-    $("#email").focus();
+    $("#email_error").text('This field is required.').show();
+    $("#email") .trigger('focus');
     return false;
   }
+  if(email.length > 254){
+    $("#email_error").text('Email address must be 254 characters or less.').show();  
+    $("#email").trigger('focus');  
+    return false; 
+  }
+  if (email !== email.toLowerCase()) {
+    $("#email_error").text('Email address must be lower case.').show();
+    $("#email") .trigger('focus');
+    return false;
+  }
+  var fname = $("input#fname").val();
+  if (fname === "") {
+    $("#fname_error").text('This field is required.').show();
+    $("#fname").trigger('focus');
+    return false;
+  } 
+  if(fname.length > 25){
+    $("#fname_error").text('First name must be 25 characters or less.').show();  
+    $("#fname").trigger('focus');  
+    return false; 
+  } 
+  var lname = $("input#lname").val();
+  if (lname === "") {
+    $("#lname_error").text('This field is required.').show();
+    $("#lname").trigger('focus');
+    return false;
+  } 
+  if(lname.length > 25){
+    $("#lname_error").text('Last name must be 25 characters or less.').show();  
+    $("#lname").trigger('focus');  
+    return false; 
+  } 
   var aString = $('.reg').serialize();
   if (passwrd1 !== "") {
     var hash = hex_sha256(passwrd1);

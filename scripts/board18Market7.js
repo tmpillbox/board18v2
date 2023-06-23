@@ -2,9 +2,12 @@
  * board18Market7.js contains the function that implements the
  * keyboard shortcut events and the functions that implement the
  * calls to the checkForUpdate.php and snapShot.php routines.
- * 
- * It now also contains the code for the new snapshot function.
+ * It also contains the code for the snapshot function.
  *
+ * All BD18 global variables are contained in one
+ * 'master variable' called BD18.  This isolates 
+ * them from global variables in other packages
+ * 
  * Copyright (c) 2013 Richard E. Price under the The MIT License.
  * A copy of this license can be found in the LICENSE.text file.
  */
@@ -28,7 +31,7 @@
  *    D   Move Down One Box
  */
 function setUpKeys() {
-  $(document).keydown(function(e){
+  $(document).on("keydown",function(e){
     if (BD18.isSnap === false) {
   	  var keycode = (e.keyCode ? e.keyCode : e.which);
       switch(keycode) {
@@ -65,7 +68,7 @@ function setUpKeys() {
 	  $('#snapname :text').val('');
 	  $('#snapname form').slideDown(300);
 	  BD18.isSnap = true;
-	  $('#rname').focus();
+	  $('#rname') .trigger( 'focus');
 	  break;
         case 77: // "M" keycode
           window.location = "board18Map.php?dogame=" + BD18.gameID;
@@ -154,8 +157,9 @@ function checkForUpdateCallback(resp) {
     document.location.reload(true);
   }
   else {
-    msg = "Invalid return code from checkForUpdateCallback(resp). ";
-    msg += "Contact the site administrator about this error.";
+    msg = "Invalid return code from checkForUpdate.php.\n";
+    msg += resp.substring(0, 20);
+    msg += "\nContact the site administrator about this error.";
     alert(msg);
   }
 }
@@ -245,7 +249,7 @@ function snapshot() {
   BD18.roundname = $("input#rname").val();  
   if (BD18.roundname === "") {  
     $("#rname_error").show();  
-    $("#rname").focus();  
+    $("#rname") .trigger( 'focus');  
     return;  
   }
   var postString = 'gameid=' + BD18.gameID;

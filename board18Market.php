@@ -26,8 +26,8 @@ $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 if ( !$link ) {
 	error_log('Failed to connect to server: ' . mysqli_connect_error());
 	$status = 'fail';
-}  
-  
+} 
+
 //Sanitize the dogame value
 $dogame = clean( $link, $_REQUEST['dogame']);
 
@@ -88,12 +88,8 @@ if ($result1) {
     <link rel="stylesheet" href="style/board18com.css" />
     <link rel="stylesheet" href="style/board18Market.css" />
     <script type="text/javascript" src="scripts/jquery.js">
-    </script> 
-    <script type="text/javascript" src="scripts/board18com.js">
     </script>
-    <script type="text/javascript" src="scripts/jqueryMigrate.js">
-    </script> 
-    <script type="text/javascript" src="scripts/jquery.ui.position.js">
+    <script type="text/javascript" src="scripts/board18com.js">
     </script>
     <script type="text/javascript" src="scripts/board18Market1.js">
     </script> 
@@ -127,18 +123,18 @@ if ($result1) {
         $('#lognote').text(startMessage);
         setUpKeys();
         $('#content').on({"click": mapMouseEvent});
-        $("#snapname").submit(function() {  
+        $("#snapname").on("submit",function() {  
           snapshot();
           return false;
         }); // end snapname submit
-        $("#button2").click(function(){  //cancel snapshot
+        $("#button2").on("click",function(){  //cancel snapshot
           $('#snapname form').slideUp(300);
           BD18.isSnap = false;
           return false;
         }); // end button2 click
         var gameToPlay = 'session='+BD18.gameID;
         $.getJSON("php/gameSession.php", gameToPlay, loadSession)
-                .error(function() {
+                .fail(function() {
           var msg = "Error loading game file. \n";
           alert(msg);
         });
@@ -160,11 +156,14 @@ if ($result1) {
       <div>
         <span id="newmainmenu" onclick="$('#traymenu').hide();
           $('#mainmenu').toggle();event.stopPropagation();"> MENU </span>
-        <p id="lognote"></p>
+        <span id="mmbutton" onclick="window.location = 'board18Map.php?dogame='
+          + BD18.gameID;">Map</span>
+        <span id="ambutton" onclick="acceptMove();">AM</span>         
+        <p id="lognote" style="left:338px"></p>
         <div id="mainmenu" class="menu">
           <ul class="bigMenu">
             <li onclick="acceptMove();" class="active move" style="display:none;">
-              Accept Move(Enter)</li>
+              Accept Move [AM](Enter)</li>
             <li onclick="cancelMove();" class="active move" style="display:none;">
               Cancel Move(C)</li>
             <li onclick="historyMove(-1);" class="no move undo grey">Undo Move(Z)</li>
@@ -185,7 +184,7 @@ if ($result1) {
               <ul>
                 <li onclick="$('#snapname .error').hide();$('#snapname :text').val('');
                   $('#snapname form').slideDown(300);
-					BD18.isSnap = true;$('#rname').focus();">Take Snapshot(S)</li>
+		  BD18.isSnap = true;$('#rname').trigger('focus');">Take Snapshot(S)</li>
                 <li onclick="window.location = 'board18SnapList.php?gameid=' + BD18.gameID;">
                   Show Snap List</li>
               </ul>

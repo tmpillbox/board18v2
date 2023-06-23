@@ -1,3 +1,157 @@
+BOARD18 2.8.1 Release Notes
+Change mysqli_set_charset($link, "utf-8") to mysqli_set_charset($link, "utf8mb4")
+Change utf8 to utf8mb4 in the database definitions.
+ 
+Changes from 2.8.0 Release:
+Implemented fix for issue 302 - sendmail problem with PHP 8
+
+BOARD18 2.8.0 Release Notes
+ 
+Changes from 2.7.9 Release:
+Implemented fix for issue 302 - sendmail problem with PHP 8
+
+BOARD18 2.7.9 Release Notes
+ 
+Changes from 2.7.8 Release:
+Implemented fix for Issue 230 - MySQL statement optimization
+Remove unused file "makeTables.php" from php folder
+
+BOARD18 2.7.8 Release Notes
+ 
+Changes from 2.7.7 Release:
+Implemented fix for Issue 219 - "Accept Move"&"Map/Market" Buttons 
+
+BOARD18 2.7.7 Release Notes
+ 
+Changes from 2.7.6 Release:
+Backed out changes for fix for Issue 238 Part1
+Removed some obsolete material from Documentation directory.
+Implemented fix for Issue 199 - Remove tempRandom.php module.
+Implemented fix for Issue 228 - Remove "Send Broadcast" function
+
+BOARD18 2.7.6 Release Notes
+ 
+Changes from 2.7.5 Release:
+Implemented fix for Issue 238 Part1
+NOTE: Before upgrading to this list please read the note at
+https://wiki.board18.org/w/Note_for_upgrade_to_Release_2.7.6
+NOTE: This Release is backed out by release 2.7.7. Do not use.
+
+BOARD18 2.7.5 Release Notes
+ 
+Changes from 2.7.4 Release:
+Implemented fix for Issue 229 - Add key to the game_player table.
+Implemented fix for Issue 241 - Add missing code to access-denied.html page.
+Fixed clean function in emailPlayer.php.
+Fixed comment in sendEmail.php
+
+BOARD18 2.7.4 Release Notes
+ 
+Changes from 2.7.3 Release:
+Implemented fix for Issue 200 - Fix the second copy of access-denied.html.
+Removed the "require_once('tempRandom.php')" line from emailPassword.php.
+
+BOARD18 2.7.3 Release Notes
+ 
+Changes from 2.7.2 Release:
+Implemented fix for Issue 195 - Field size discrepancy in board18Players.php.
+Implemented fix for Issue 197 - Invalid return code from checkForUpdate.
+Make some minor corrections to code in board18Map7.js and board18Market7.js.
+Make some minor corrections to code in checkForUpdate.php.
+
+BOARD18 2.7.1 Release Notes
+ 
+Changes from 2.7.0 Release:
+Implemented fix for Issue 198 - Enhance PHP error logging - part 6
+
+BOARD18 2.7.0 Release Notes
+ 
+Changes from 2.6.9 Release:
+Implemented fix for Issue 192 - Enhance PHP error logging - part 5
+Implemented fix for Issue 193 - Field size discrepancy in board18Games.php
+Implemented fix for Issue 196 - Actions fail (404) in long-running tab 
+Remove unused <script> link from board18Map.php
+
+BOARD18 2.6.9 Release Notes
+ 
+Changes from 2.6.8 Release:
+Implemented fix for Issue 190 - Enhance PHP error logging - part 4
+Implemented fix for Issue 191 - Last player error when making new game
+
+BOARD18 2.6.8 Release Notes
+ 
+Changes from 2.6.7 Release:
+Implemented fix for Issue 185 - Enhance PHP error logging part 3
+Implemented fix for Issue 183 - Redesign layout of board18Misc page
+Delete some unused jQuery Migration files
+
+BOARD18 2.6.7 Release Notes
+ 
+Changes from 2.6.6 Release:
+Implemented fix for Issue 167 - Redesign layout of New Game page
+
+BOARD18 2.6.6 Release Notes
+ 
+Changes from 2.6.5 Release:
+Implemented fix for Issue 170 - Upgrade jQuery to current version 
+
+BOARD18 2.6.5 Release Notes
+ 
+Changes from 2.6.4 Release:
+Implemented fix for Issue 181 - Enhance PHP error logging part 2
+Implemented fix for Issue 182 - Email address mismatch
+
+BOARD18 2.6.4 Release Notes
+ 
+Changes from 2.6.3 Release:
+Implemented fix for Issue 176 - Enhance error reporting in emailPlayerID.php
+Implemented fix for Issue 177 - Remediation of deprecated jQery Statements Pt. 1
+
+BOARD18 2.6.3 Release Notes
+ 
+Changes from 2.6.2 Release:
+Implemented fix for Issue 172 - Invalid constant usage in sendEmail.php
+Implemented fix for Issue 173 - General code cleanup following Bugs 165 & 171.
+ 
+BOARD18 2.6.2 Release Notes
+ 
+Changes from 2.6.1 Release:
+Implemented fix for Issue 169 - Display game from board18Games.
+Implemented fix for Issue 171 - Remove jQuery UI Position
+
+BOARD18 2.6.1 Release Notes
+ 
+Changes from 2.6.0 Release:
+Implemented fix for Issue 165 - Remove jQuery Migrate
+
+BOARD18 2.6.0 Release Notes
+ 
+Changes from 2.5.11 Release:
+Implemented fix for Issue 163 - Make player name fields "required".
+Implemented fix for Issue 164 - Set page size of all BOARD18 admin lists to 20.
+Implemented fix for Issue 166 - Require lower case on all Email Addresses.
+Added more documentation to the headers of 12 JavaScript files.
+Updated players guide to version 2.6
+
+BOARD18 2.5.11 Release Notes
+ 
+Changes from 2.5.10 Release:
+Implemented fix for Issue 121 - Add a search feature to "View all games" page. 
+
+BOARD18 2.5.10 Release Notes
+ 
+Changes from 2.5.9 Release:
+Implemented fix for Issue 160 - Inadequate Game Name editing in board18New
+Implemented fix for Issue 159 - Potential vulnerability to invalid user input 
+
+BOARD18 2.5.9 Release Notes
+ 
+Changes from 2.5.8 Release:
+Implemented fix for Issue 153 "Can't view all games"
+Implemented change for Issue 96 "Request for 2 new scripts".
+Replaced cronCode with new aws-cli backups.
+Some minor fixes to error reports and documentation.
+
 BOARD18 2.5.8 Release Notes
  
 Changes from 2.5.7 Release:

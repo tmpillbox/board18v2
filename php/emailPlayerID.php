@@ -21,7 +21,7 @@ require_once('sendEmail.php');
 
 $link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
 if (!$link) {
-  error_log('Failed to connect to server: ' . mysqli_connect_error());
+  error_log('emailPlayerID.php: Connect Failed: ' . mysqli_connect_error());
   echo 'fail';
   exit; 
 }
@@ -29,7 +29,7 @@ if (!$link) {
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
 function clean($conn, $str) {
-  $str = @trim($str);
+  $str = trim($str);
   return mysqli_real_escape_string($conn, $str);
 }
 
@@ -49,8 +49,7 @@ $qry1 = "SELECT * FROM players WHERE email='$email'";
 $result1 = mysqli_query($link, $qry1);
 if ($result1) {
   if (mysqli_num_rows($result1) === 0) { // No email!
-    echo 'fail';
-    error_log("Look up email address: No Email address found!");
+    echo 'noemail';
     exit;
   } else { // Found email address in database!
     $playerrow = mysqli_fetch_assoc($result1);
@@ -64,7 +63,7 @@ if ($result1) {
   }
 } else {
   echo 'fail';
-  error_log("Look up email address: Query failed");
+  error_log("emailPlayerID.php: Look up email address: Query failed");
   exit;
 }
 ?>

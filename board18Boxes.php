@@ -30,7 +30,7 @@ if (mysqli_connect_error()) {
   $status = 'fail';
   exit;
 }
-mysqli_set_charset($link, "utf-8");
+mysqli_set_charset($link, "utf8mb4");
 
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
@@ -57,7 +57,7 @@ if ($result1) {
   $status = 'fail';
   exit;
 }
-$pagesize = 10; 
+$pagesize = 20; 
 $pagecount = ceil((float)$totalcount/(float)$pagesize);
 ?>
 <!doctype html>
@@ -105,17 +105,17 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
           var gameURL = "board18Games.php?gameid=" + $(this).html();
           window.location = gameURL;
         }); // end gameid.click
-        $('#button1').click(function() {
+        $('#button1').on("click",function() {
           BD18.box.update = 'no';
           updateBox();
           return false;
         }); // end button1 click
-        $('#button2').click(function() {
+        $('#button2').on("click",function() {
           BD18.box.update = 'no';
           paintBox();
           return false;
         }); // end button2 click
-        $('#button3').click(function() {
+        $('#button3').on("click",function() {
           $('#playerlist').remove();
           $('#thebox').slideUp(300);
           BD18.box.update = 'no';
@@ -174,21 +174,21 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
             <p>
               <label for="bname">Change Box Name:</label>
               <input type="text" name="bname" id="bname"
-                     value="">
+                     size="30" value="">
               <label class="error" for="bname" id="bname_error">
                 This field is required.</label>
             </p>
            <p>
               <label for="version">Change Version:</label>
               <input type="text" name="version" id="version"
-                     value="">
+                     size="30" value="">
               <label class="error" for="version" id="version_error">
                 This field is required.</label>
             </p>
            <p>
               <label for="author">Change Author:</label>
               <input type="text" name="author" id="author"
-                     value="">
+                     size="30" value="">
               <label class="error" for="author" id="author_error">
                 This field is required.</label>
             </p>

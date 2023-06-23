@@ -7,7 +7,7 @@
  * ISP or your hosting service for these Emails. 
  * 
  * Input consists the following parameters:
- *   login
+ *   email
  *   subject
  *   body
  * 
@@ -15,9 +15,14 @@
  *
  * Copyright (c) 2015 Richard E. Price under the The MIT License.
  * A copy of this license can be found in the LICENSE.text file.
+ * On Jan 17 2023 modified to work with PHPMailer version 6.7.1.
  */
 
-require_once( 'class.phpmailer.php');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
 require_once('configMail.php');
 
 
@@ -28,9 +33,7 @@ function sendEmail($email, $subject, $body) {
   $mailObj->Host = MAIL_HOST;     // Specify the SMTP server.
   $mailObj->Port = MAIL_PORT;     // Specify port. Use 587 for STARTTLS.
   $mailObj->SMTPAuth = true;      // Enable SMTP authentication
-  if (MAIL_TLS == 'Yes') {        // Is TLS required by the SMTP server?
-    $mailObj->SMTPSecure = 'tls';
-  }
+  $mailObj->SMTPSecure = MAIL_TLS; // Is TLS required by the SMTP server?
   $mailObj->Username = MAIL_USER; // SMTP username.
   $mailObj->Password = MAIL_PASS; // SMTP password.
   $mailObj->setFrom(MAIL_SENDER,'BOARD18');

@@ -68,7 +68,7 @@ if (mysqli_connect_error()) {
   echo $errResp;
   exit;
 }
-mysqli_set_charset($link, "utf-8");
+mysqli_set_charset($link, "utf8mb4");
 
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
@@ -125,7 +125,7 @@ while ($row1 = mysqli_fetch_assoc($result1)) {
 $succResp = new Response();
 $succResp->stat = "success";
 $succResp->boxes = $boxlist;
-echo json_encode($succResp);
+echo json_encode($succResp, JSON_PARTIAL_OUTPUT_ON_ERROR);
 exit;
 ?>
 

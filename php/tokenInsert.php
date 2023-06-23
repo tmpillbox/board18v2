@@ -20,12 +20,12 @@ require_once('config.php');
 $link = mysqli_connect(DB_HOST, DB_USER, 
         DB_PASSWORD, DB_DATABASE);
 if (mysqli_connect_error()) {
-  $logMessage = 'MySQL Error 1: ' . mysqli_connect_error();
-  error_log($logMessage);
+  $errmsg1 = 'tokenInsert: failed to connect to server: ';
+  error_log($errmsg1 . mysqli_connect_error());
   echo "fail";
   exit;
 }
-mysqli_set_charset($link, "utf-8");
+mysqli_set_charset($link, "utf8mb4");
 
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
@@ -45,7 +45,7 @@ $qry1 = "INSERT INTO auth_tokens (selector, hashedValidator, player_id, expires)
 $qry1 .= "VALUES ('$selector', '$validator', '$playerid', '$expires')";
 $result1 = mysqli_query($link, $qry1);
 if (!$result1) {
-  error_log("INSERT INTO auth_tokens - Query failed");
+  error_log("tokenInsert: INSERT INTO auth_tokens - Query failed");
   echo "fail";
   exit;
 } else {

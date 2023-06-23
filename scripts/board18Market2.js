@@ -1,6 +1,10 @@
 /* 
  * The board18Market2 file contains startup functions 
  * 
+ *  All BD18 global variables are contained in one
+ * 'master variable' called BD18.  This isolates 
+ * them from global variables in other packages
+ * 
  * Copyright (c) 2013 Richard E. Price under the The MIT License.
  * A copy of this license can be found in the LICENSE.text file.
  */
@@ -223,7 +227,7 @@ function loadSession(session) {
 	var boxstring = 'box=';
 	boxstring = boxstring + BD18.gm.boxID;
 	$.getJSON("php/gameBox.php", boxstring, loadBox)
-	    .error(function() { 
+	    .fail(function() { 
 		    var msg = "Error loading game box file. \n";
 		    msg = msg + "This is probably due to a game box format error.";
 		    alert(msg); 

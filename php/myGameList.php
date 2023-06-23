@@ -48,25 +48,22 @@ $errorResp = new Response();
 $errorResp->stat = "fail";
 $errResp = json_encode($errorResp);
 
-$link = @mysqli_connect(DB_HOST, DB_USER, 
+$link = mysqli_connect(DB_HOST, DB_USER, 
         DB_PASSWORD, DB_DATABASE);
 if (mysqli_connect_error()) {
-  $logMessage = 'Failed to connect to server: ' . mysqli_connect_error();
+  $logMessage = 'myGameList.php: MySQL connect error: ' . mysqli_connect_error();
   error_log($logMessage);
   echo $errResp;
   exit;
 }
 
 $you = intval($_SESSION['SESS_PLAYER_ID']);
-$qry = "SELECT b.game_id, b.gname, c.bname, 
-               c.version, DATE(b.start_date) 
-          FROM game_player AS a 
-            JOIN (game AS b, box AS c)
-              ON (a.player_id = $you
-                AND a.game_id = b.game_id
-                AND b.status = 'Active'
-                AND b.box_id = c.box_id)
-          ORDER BY b.start_date DESC";
+$qry = "SELECT b.game_id, b.gname, c.bname, c.version, DATE(b.start_date) 
+           FROM game_player AS a 
+             JOIN game AS b ON ( b.game_id = a.game_id )
+             JOIN box AS c ON ( c.box_id = b.box_id )
+             WHERE a.player_id = $you and b.status = 'Active'
+           ORDER BY b.start_date DESC";
   $result = mysqli_query($link,$qry);
 if ($result) {
   if (mysqli_num_rows($result) === 0) { // no games.
@@ -90,11 +87,11 @@ if ($result) {
     $succResp->stat = "success";
     $succResp->games = $gamelist;
     
-    echo json_encode($succResp);
+    echo json_encode($succResp, JSON_PARTIAL_OUTPUT_ON_ERROR);
     exit;
   }
 } else {
-  $logMessage = 'Error on SELECT query: ' . mysqli_error($link);
+  $logMessage = 'myGameList.php: Error on SELECT query.';
   error_log($logMessage);
   echo $errResp;
 }

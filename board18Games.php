@@ -29,7 +29,7 @@ if (mysqli_connect_error()) {
   $status = 'fail';
   exit;
 }
-mysqli_set_charset($link, "utf-8");
+mysqli_set_charset($link, "utf8mb4");
 
 //Function to sanitize values received from the form. 
 //Prevents SQL injection
@@ -57,7 +57,7 @@ if ($result1) {
   $status = 'fail';
   exit;
 }
-$pagesize = 12; 
+$pagesize = 20; 
 $pagecount = ceil((float)$totalcount/(float)$pagesize);
 ?>
 <!doctype html>
@@ -107,17 +107,17 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
           var playerURL = "board18Players.php?login=" + $(this).html();
           window.location = playerURL;
         }); // end playerlist.click
-        $('#button1').click(function() {
+        $('#button1').on("click",function() {
           BD18.game.update = 'no';
           updateGame();
           return false;
         }); // end button1 click
-        $('#button2').click(function() {
+        $('#button2').on("click",function() {
           BD18.game.update = 'no';
           paintGame();
           return false;
         }); // end button2 click
-        $('#button3').click(function() {
+        $('#button3').on("click",function() {
           $('#playerlist').remove();
           $('#thegame').slideUp(300);
           BD18.game.update = 'no';
@@ -125,11 +125,16 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
           doPageLinks();
           return false;
         }); // end button3 click
-        $('#button4').click(function() {
+        $('#button4').on("click",function() {
           var boxURL = "board18Boxes.php?boxid=" + BD18.game.boxid;
           window.location = boxURL;
           return false;
-        }); // end button3 click
+        }); // end button4 click
+        $('#button5').on("click",function() {
+          var viewURL = "board18Map.php?dogame=" + BD18.game.gameid;
+          window.location = viewURL;
+          return false;
+        }); // end button5 click
       }); // end ready
     </script>
   </head>
@@ -181,7 +186,7 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
             <p>
               <label for="gname">Change Game Name:</label>
               <input type="text" name="gname" id="gname" class="reg"
-                     value="">
+                     size="30" value="">
               <label class="error" for="gname" id="gname_error">
                 This field is required.</label>
             </p>
@@ -190,6 +195,8 @@ $pagecount = ceil((float)$totalcount/(float)$pagesize);
             <p>
               <input type="button" name="updatebutton" class="pwbutton"  
                      id="button1" value="Update Game" >
+              <input type="button" name="showbutton" class="pwbutton"  
+                     id="button5" value="Show Game" >
               <input type="button" name="boxbutton" class="pwbutton"  
                      id="button4" value="Go To Box" >
               <input type="button" name="resbutton" class="pwbutton"  
